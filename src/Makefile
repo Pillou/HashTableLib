@@ -7,6 +7,9 @@ all: test
 
 test: HashTable.o
 
+run:
+	./test
+
 clean:
 	rm -f test
 	rm -f *.o
