@@ -136,7 +136,7 @@ int32_t HashTableRemove(HashTable_t *hash_table, void *key)
 	uint32_t hash = hash_table->hash_fct(key);
 	assert(hash < HASH_TABLE_NUM_BUCKETS);
 	HashTableNode_t *node = hash_table->buckets[hash];
-	HashTableNode_t *prev = node;
+	HashTableNode_t *prev = NULL;
 	
 	while(node != NULL)
 	{
@@ -148,12 +148,16 @@ int32_t HashTableRemove(HashTable_t *hash_table, void *key)
 		prev = node;
 		node = node->next;
 	}
-	if((node != NULL) && (prev != NULL))
+	if(node != NULL)	// node found
 	{
-		prev->next = node->next;
-	}
-	if(node != NULL)
-	{
+		if(prev != NULL)
+		{
+			prev->next = node->next;
+		}
+		else
+		{
+			hash_table->buckets[hash] = NULL;
+		}
 		free(node);
 		hash_table->count--;
 		return 0;
@@ -180,12 +184,30 @@ int32_t HashTableTraverse(HashTable_t *hash_table, HashTableTraverse_t traverse_
 			node = node->next;
 		}
 	}
-	 return ret;
+	return ret;
 }
 
-void HashTableDelete(HashTable_t hash_table)
+void HashTableDelete(HashTable_t *hash_table)
 {
+	assert(hash_table != NULL);
 	
+	HashTableNode_t *node = NULL;
+	HashTableNode_t *next = NULL;
+
+	for(uint32_t i= 0; i<HASH_TABLE_NUM_BUCKETS; i++)
+	{
+		node = hash_table->buckets[i];
+		while(node != NULL)
+		{ 
+			next = node->next;
+			
+			free(node);
+			hash_table->count--;
+			
+			node = next;
+		}
+	}
+	free(hash_table);
 }
 
  

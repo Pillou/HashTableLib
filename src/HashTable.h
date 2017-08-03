@@ -53,7 +53,7 @@ typedef struct HashTable_s
 typedef int32_t (*HashTableTraverse_t)(HashTableNode_t *node);
  
 HashTable_t* HashTableCreate(HashTableCmp_t compare_fct, HashTableFct_t hash_fct);
-void HashTableDelete(HashTable_t hash_table);
+void HashTableDelete(HashTable_t *hash_table);
  
 int32_t HashTableSet(HashTable_t *hash_table, void *key, void *data);
 void* HashTableGet(HashTable_t *hash_table, void *key);
@@ -61,13 +61,12 @@ int32_t HashTableRemove(HashTable_t *hash_table, void *key);
  
 uint32_t HashTableGetCount(HashTable_t *hash_table);
 
-uint32_t HashTableModularHashing(void *key);
-int HashTableUINTCompare(void* a, void *b);
-
 int32_t HashTableTraverse(HashTable_t *hash_table, HashTableTraverse_t travers_fct);
  
  
- 
+ // Example : key = uint32_t, hash function = modular hashing
+ uint32_t HashTableModularHashing(void *key);
+int HashTableUINTCompare(void* a, void *b);
  
  
  #endif //__HASH_TABLE__H__

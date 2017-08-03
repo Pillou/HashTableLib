@@ -126,8 +126,8 @@ int main(int argc, char **argv)
 	printf("\n\nPrinting hash table :\n");
 	assert( HashTableTraverse(ht1, print_node) == 0);
 	
-
-	
+	printf("Delete the hashtable.\n");
+	HashTableDelete(ht1);
 	
 	return 0;
 }
